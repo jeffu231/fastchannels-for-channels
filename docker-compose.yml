@@ -1,0 +1,25 @@
+
+services:
+  fastchannels-for-channels:
+    image: ghcr.io/${GHCR_OWNER:-kineticman}/fastchannels:${FASTCHANNELS_IMAGE_TAG:-latest}
+    container_name: fastchannels-for-channels
+    environment:
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL}
+      CHANNELS_DVR_SERVER_URL: ${CHANNELS_DVR_SERVER_URL}
+      TZ: ${TZ} # Add your local timezone in standard linux format. E.G. US/Eastern, US/Central, US/Mountain, US/Pacific, etc
+    restart: unless-stopped
+    networks:
+      - traefik-net
+    volumes:
+      - fastchannels-db-data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.channels-fastchannels-m3u.rule=Host(`${HOSTNAME}`)"
+      - "traefik.http.services.channels-fastchannels-m3u.loadbalancer.server.port=5523"
+
+networks:
+  traefik-net:
+    external: true
+
+volumes:
+  fastchannels-db-data:

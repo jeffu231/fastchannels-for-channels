@@ -1,0 +1,8 @@
+
+services:
+  frndlytv-for-channels:
+    image: fastchannels-for-channels-dev
+    container_name: fastchannels-for-channels-dev
+    build: 
+      context: git@github.com:kineticman/FastChannels.git
+    
